@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Discover which Langara design program matches your interests. Take our interactive quiz to find out if you're a Space Shaper, Pixel Wizard, Design Explorer, or Chaotic Good Unicorn!">
+    <title>What Kind of Designer Are You? | Langara Design Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Quiz Container -->
+    <div class="quiz-container">
+        <!-- Intro Screen -->
+        <div class="intro-screen" id="introScreen">
+            <h1>What Kind of Designer Are You?</h1>
+            <p class="subtitle">8 quick questions. 1 fun result. 0 exams.</p>
+            <button class="btn btn-primary" onclick="startQuiz()">Start the quiz</button>
+        </div>
+
+        <!-- Question Screens -->
+        <div class="question-screen" id="questionScreen">
+            <div class="question-header">
+                <div class="question-number" id="questionNumber"></div>
+                <div class="question-text" id="questionText"></div>
+            </div>
+            <div class="options-grid" id="optionsGrid"></div>
+            <div class="feedback" id="feedback"></div>
+            <div class="next-button">
+                <button class="btn btn-primary btn-next" id="nextBtn" onclick="nextQuestion()">Next</button>
+            </div>
+            <div class="helper-text">Tap an answer to continue</div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div class="loading-screen" id="loadingScreen">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loadingText">Summoning your inner designer…</div>
+        </div>
+
+        <!-- Result Screen -->
+        <div class="result-screen" id="resultScreen">
+            <div class="result-emoji" id="resultEmoji"></div>
+            <h2 class="result-title" id="resultTitle"></h2>
+            <p class="result-description" id="resultDescription"></p>
+            <p class="result-program" id="resultProgram"></p>
+            <div class="result-actions">
+                <a href="#" class="btn btn-primary" id="primaryCTA" target="_blank"></a>
+                <a href="#" class="btn btn-secondary" id="secondaryCTA" target="_blank"></a>
+            </div>
+            <div class="share-section">
+                <p class="share-text">Not sure? Try again and answer with your second instinct.</p>
+                <button class="btn btn-restart" onclick="restartQuiz()">Restart Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
