@@ -786,9 +786,20 @@ body::after {
     }
 
     .quiz-container {
-        padding: 28px 20px;
+        padding: 20px 16px;
+        min-height: calc(100dvh - 20px);
         max-height: calc(100dvh - 20px);
         border-left-width: 3px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Question screen: fill height so Next can stick to bottom */
+    .quiz-container .question-screen.active {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
     }
 
     .intro-screen h1 {
@@ -803,48 +814,75 @@ body::after {
     }
 
     .question-text {
-        font-size: 22px;
-        line-height: 30px;
+        font-size: 20px;
+        line-height: 26px;
     }
 
-    .question-header {
-        margin-bottom: 16px;
-        padding-bottom: 10px;
-    }
-
-    .options-grid {
-        gap: 12px;
-        margin-bottom: 16px;
-    }
-
-    .option-card {
-        padding: 14px;
-        min-height: 80px;
-    }
-
-    .option-icon {
-        font-size: 34px;
+    .question-number {
+        font-size: 11px;
         margin-bottom: 8px;
     }
 
+    .question-header {
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        flex-shrink: 0;
+    }
+
+    .question-header::after {
+        width: 40px;
+    }
+
+    .options-grid {
+        gap: 10px;
+        margin-bottom: 12px;
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-right: 2px;
+    }
+
+    .option-card {
+        padding: 12px;
+        min-height: 72px;
+        flex-shrink: 0;
+    }
+
+    .option-icon {
+        font-size: 28px;
+        margin-bottom: 6px;
+    }
+
     .option-text {
-        font-size: 14px;
-        line-height: 20px;
+        font-size: 13px;
+        line-height: 18px;
     }
 
     .feedback {
-        font-size: 14px;
-        margin-bottom: 14px;
+        font-size: 13px;
+        line-height: 20px;
+        margin-bottom: 8px;
+        flex-shrink: 0;
+    }
+
+    /* Next button area: always visible at bottom (flex keeps it in view) */
+    .question-screen .next-button {
+        margin-top: 8px;
+        padding-bottom: 8px;
+        flex-shrink: 0;
+    }
+
+    .question-screen .helper-text {
+        margin-top: 4px;
+        font-size: 11px;
+        flex-shrink: 0;
     }
 
     .btn {
-        padding: 12px 28px;
-        font-size: 12px;
-    }
-
-    .helper-text {
-        margin-top: 14px;
-        font-size: 11px;
+        padding: 14px 28px;
+        font-size: 13px;
+        min-height: 44px;
     }
 
     .result-emoji {
