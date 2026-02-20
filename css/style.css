@@ -33,13 +33,16 @@ body {
     background-size: 400% 400%;
     animation: bgShift 25s ease-in-out infinite;
     min-height: 100vh;
+    min-height: 100dvh;
     height: 100vh;
+    height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
     overflow: hidden;
     position: relative;
+    box-sizing: border-box;
 }
 
 @keyframes bgShift {
@@ -153,13 +156,15 @@ body::after {
     }
 }
 
-/* Glassmorphism container */
+/* Glassmorphism container – centered on screen */
 .quiz-container {
     position: relative;
     z-index: 1;
     max-width: 920px;
     width: 100%;
     max-height: calc(100vh - 40px);
+    max-height: calc(100dvh - 40px);
+    margin: auto;
     overflow-y: auto;
     overflow-x: hidden;
     background: rgba(10, 10, 10, 0.6);
@@ -782,7 +787,11 @@ body::after {
 @media (max-width: 767px) {
     body {
         padding: 10px;
+        min-height: 100dvh;
         height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .quiz-container {
