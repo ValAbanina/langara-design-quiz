@@ -802,6 +802,15 @@ body::after {
         min-height: 0;
     }
 
+    /* Intro: fill container and center Start button vertically on mobile */
+    .quiz-container .intro-screen {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
     .intro-screen h1 {
         font-size: 28px;
         line-height: 36px;
@@ -834,7 +843,7 @@ body::after {
     }
 
     .options-grid {
-        gap: 10px;
+        gap: 8px;
         margin-bottom: 12px;
         flex: 1;
         min-height: 0;
@@ -843,20 +852,46 @@ body::after {
         padding-right: 2px;
     }
 
+    /* Mobile: 2-column card – emoji left, text right (most space for text) */
     .option-card {
-        padding: 12px;
-        min-height: 72px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: 1fr;
+        gap: 10px 12px;
+        align-items: center;
+        padding: 10px 12px 10px 16px; /* extra padding on the left */
+        min-height: 0;
         flex-shrink: 0;
+        margin-left: 12px;
+        margin-right: 12px; /* narrower card: inset from grid edges */
     }
 
-    .option-icon {
+    .option-card .option-icon {
+        grid-column: 1;
+        grid-row: 1;
         font-size: 28px;
-        margin-bottom: 6px;
+        margin-bottom: 0;
+        align-self: center;
+        line-height: 1;
     }
 
-    .option-text {
-        font-size: 13px;
-        line-height: 18px;
+    .option-card .option-text {
+        grid-column: 2;
+        grid-row: 1;
+        font-size: 16px;
+        line-height: 22px;
+        align-self: center;
+        padding-right: 28px; /* space for checkmark */
+    }
+
+    .option-card .checkmark {
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%) scale(0);
+    }
+
+    .option-card.selected .checkmark {
+        transform: translateY(-50%) scale(1);
     }
 
     .feedback {
@@ -1011,13 +1046,13 @@ body::after {
         margin-bottom: 20px;
     }
 
-    .option-icon {
-        font-size: 36px;
-        margin-bottom: 8px;
+    .option-card .option-icon {
+        font-size: 32px;
+        margin-bottom: 0;
     }
 
     .option-card {
-        padding: 16px;
+        padding: 10px 12px 10px 16px;
     }
 
     .result-emoji {
