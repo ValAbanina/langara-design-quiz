@@ -825,6 +825,10 @@ body::after {
     .question-text {
         font-size: 20px;
         line-height: 26px;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        word-break: break-word;
+        max-width: 100%;
     }
 
     .question-number {
@@ -836,6 +840,7 @@ body::after {
         margin-bottom: 12px;
         padding-bottom: 8px;
         flex-shrink: 0;
+        min-width: 0; /* allow question text to wrap, prevent overflow */
     }
 
     .question-header::after {
@@ -882,6 +887,11 @@ body::after {
         line-height: 22px;
         align-self: center;
         padding-right: 28px; /* space for checkmark */
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        word-break: break-word;
+        min-width: 0;
+        max-width: 100%;
     }
 
     .option-card .checkmark {
