@@ -80,28 +80,6 @@ const questions = [
             { text: "Something to learn so I use it smartly, not blindly.", icon: "📚", score: "design_explorer", feedback: "Smart. Learn the tool, stay in control." },
             { text: "My future sidekick. I'll still take credit, obviously.", icon: "🦾", score: "unicorn", feedback: "AI as sidekick. That tracks." }
         ]
-    },
-    {
-        id: 7,
-        text: "It's project week. You instinctively start with:",
-        type: "icon",
-        options: [
-            { text: "A rough sketch of a space and where people will walk.", icon: "📋", score: "space_shaper", feedback: "Floor plans first. Very spatial of you." },
-            { text: "A quick wireframe of screens and user flow.", icon: "🖼️", score: "pixel_wizard", feedback: "Wireframes before visuals. Efficient." },
-            { text: "A moodboard of colours, fonts, and references.", icon: "🎨", score: "design_explorer", feedback: "Moodboard energy. You set the vibe first." },
-            { text: "A wild idea and the thought 'we'll figure it out live.'", icon: "💥", score: "unicorn", feedback: "Chaos as a creative method. Bold." }
-        ]
-    },
-    {
-        id: 8,
-        text: "What kind of first job sounds fun?",
-        type: "text",
-        options: [
-            { text: "Designing interiors, exhibits, or store displays.", icon: "🏛️", score: "space_shaper", feedback: "Physical spaces, real impact." },
-            { text: "Designing apps, websites, or digital products.", icon: "💻", score: "pixel_wizard", feedback: "Digital products are your natural habitat." },
-            { text: "Being a junior designer who touches lots of different projects.", icon: "🎨", score: "design_explorer", feedback: "Generalist energy. You'll specialize when you're ready." },
-            { text: "A job title I probably make up myself.", icon: "👑", score: "unicorn", feedback: "Self-appointed Creative Overlord. We see it." }
-        ]
     }
 ];
 
@@ -111,32 +89,28 @@ const results = {
         title: "You Are: Space Shaper",
         description: "You think in 3D and love designing how people move through rooms, shops, and events. Atmosphere and layout are your superpowers.",
         program: "You'd likely vibe with the Design Formation diploma – lots of interiors, exhibits, and environmental design. Projects where cardboard, foam, and physical models are your best friends.",
-        primaryCTA: { text: "Learn about Design Formation", url: "https://www.designformation.ca/design-formation" },
-        secondaryCTA: { text: "Register for info session", url: "https://reach.langara.ca/Register-to-event/?readableEventId=Information_Session_Design_Formation731896028" }
+        primaryCTA: { text: "Learn about Design Formation", url: "https://www.designformation.ca/design-formation" }
     },
     pixel_wizard: {
         emoji: "🧙‍♂️",
         title: "You Are: Pixel Wizard",
         description: "You live in the land of screens. Apps, websites, and digital products are your playground. You care how things look and how they work.",
         program: "You'd likely vibe with the Digital Media & Design (DGMD) diploma – focused on UX/UI, web, and front-end basics. Figma, prototyping, and code help you bring ideas to life.",
-        primaryCTA: { text: "Learn about Digital Media & Design", url: "https://www.designformation.ca/dgmd" },
-        secondaryCTA: { text: "Register for info session", url: "https://reach.langara.ca/Register-to-event/?readableEventId=Information_Session_Digital_Media_Design2214674783" }
+        primaryCTA: { text: "Learn about Digital Media & Design", url: "https://www.designformation.ca/dgmd" }
     },
     design_explorer: {
         emoji: "🧭",
         title: "You Are: Design Explorer",
         description: "You know you're creative but don't want to pick one lane yet. You want to try different types of design and see what clicks.",
         program: "You may want to start with Design Formation – a broad base (2D, 3D, spaces, visuals) that can lead to interiors, UX/UI, branding, and more. Build a portfolio that can point you anywhere.",
-        primaryCTA: { text: "Explore Design Formation", url: "https://www.designformation.ca/design-formation" },
-        secondaryCTA: { text: "Register for info session", url: "https://reach.langara.ca/Register-to-event/?readableEventId=Information_Session_Design_Formation731896028" }
+        primaryCTA: { text: "Explore Design Formation", url: "https://www.designformation.ca/design-formation" }
     },
     unicorn: {
         emoji: "🦄",
         title: "You Are: Chaotic Good Unicorn",
         description: "You love big ideas, weird projects, and mixing physical and digital. Your career is going to look more like a quest than a straight line.",
         program: "Start where your energy is: More into spaces and making things? → Design Formation. More into screens and tech? → Digital Media & Design. You might touch both over time – and that's very on-brand for a unicorn.",
-        primaryCTA: { text: "Compare the two programs", url: "https://www.designformation.ca/program-comparison" },
-        secondaryCTA: { text: "Register for info session", url: "https://www.designformation.ca/learn-more-df-dgmd-info-week" }
+        primaryCTA: { text: "Compare the two programs", url: "https://www.designformation.ca/program-comparison" }
     }
 };
 
@@ -149,6 +123,135 @@ let scores = {
     unicorn: 0
 };
 let selectedAnswer = null;
+let currentResultType = '';
+
+function getWebhookUrl() {
+    const url = window.WEBHOOK_URL;
+    if (!url || typeof url !== 'string') return null;
+    const trimmed = url.trim();
+    if (!trimmed || trimmed.includes('PASTE_YOUR_MAKE_WEBHOOK_URL_HERE')) return null;
+    return trimmed;
+}
+
+function resetLeadCaptureUI() {
+    const panel = document.getElementById('leadFormPanel');
+    const btn = document.getElementById('moreInfoBtn');
+    const form = document.getElementById('leadForm');
+    const msg = document.getElementById('leadFormMessage');
+    const submitBtn = document.getElementById('leadSubmitBtn');
+    if (!panel || !btn || !form) return;
+    panel.hidden = true;
+    panel.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    form.reset();
+    if (msg) {
+        msg.textContent = '';
+        msg.classList.remove('lead-form-message--error', 'lead-form-message--success');
+    }
+    if (submitBtn) submitBtn.disabled = false;
+}
+
+function toggleLeadFormPanel() {
+    const panel = document.getElementById('leadFormPanel');
+    const btn = document.getElementById('moreInfoBtn');
+    if (!panel || !btn) return;
+    const open = panel.hidden;
+    panel.hidden = !open;
+    panel.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) {
+        const first = document.getElementById('leadFirstName');
+        if (first) first.focus();
+    }
+}
+
+async function handleLeadFormSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('leadForm');
+    const msg = document.getElementById('leadFormMessage');
+    const submitBtn = document.getElementById('leadSubmitBtn');
+    const honeypot = document.getElementById('leadWebsite');
+    if (!form || !msg || !submitBtn) return;
+
+    if (honeypot && honeypot.value.trim() !== '') {
+        msg.textContent = 'Thanks — you’re all set.';
+        msg.classList.remove('lead-form-message--error');
+        msg.classList.add('lead-form-message--success');
+        form.reset();
+        return;
+    }
+
+    const firstName = document.getElementById('leadFirstName')?.value.trim() || '';
+    const lastName = document.getElementById('leadLastName')?.value.trim() || '';
+    const email = document.getElementById('leadEmail')?.value.trim() || '';
+
+    if (!firstName || !lastName || !email) {
+        msg.textContent = 'Please enter first name, last name, and email.';
+        msg.classList.add('lead-form-message--error');
+        msg.classList.remove('lead-form-message--success');
+        return;
+    }
+
+    const webhookUrl = getWebhookUrl();
+    if (!webhookUrl) {
+        msg.textContent = 'Not connected yet. Paste your Make webhook into js/make-config.js (WEBHOOK_URL).';
+        msg.classList.add('lead-form-message--error');
+        msg.classList.remove('lead-form-message--success');
+        return;
+    }
+
+    submitBtn.disabled = true;
+    msg.textContent = 'Sending…';
+    msg.classList.remove('lead-form-message--error', 'lead-form-message--success');
+
+    try {
+        const response = await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                quiz_result: currentResultType
+            })
+        });
+
+        if (!response.ok) {
+            const hint =
+                response.status === 410
+                    ? 'Webhook URL expired — in Make, delete this Custom webhook and add a new one, then paste the new URL into js/make-config.js.'
+                    : response.status === 404
+                        ? 'URL not found — copy the webhook URL again from Make (Custom webhook) and update js/make-config.js.'
+                        : 'In Make, open this scenario, click Run once, then submit this form again while it is listening.';
+            const err = new Error(hint);
+            err.webhookHttpStatus = response.status;
+            throw err;
+        }
+
+        msg.textContent = 'Thanks! We’ll be in touch.';
+        msg.classList.add('lead-form-message--success');
+        msg.classList.remove('lead-form-message--error');
+        form.reset();
+    } catch (err) {
+        if (err?.webhookHttpStatus != null) {
+            msg.textContent = `Webhook error (HTTP ${err.webhookHttpStatus}). ${err.message}`;
+        } else if (err?.name === 'TypeError') {
+            msg.textContent =
+                'Could not reach the webhook (network or browser block). If testing from a local file, serve the site over http://localhost instead of opening the HTML file directly.';
+        } else {
+            msg.textContent = 'Something went wrong. Please try again.';
+        }
+        msg.classList.add('lead-form-message--error');
+        msg.classList.remove('lead-form-message--success');
+    } finally {
+        submitBtn.disabled = false;
+    }
+}
+
+document.getElementById('moreInfoBtn')?.addEventListener('click', toggleLeadFormPanel);
+document.getElementById('leadForm')?.addEventListener('submit', handleLeadFormSubmit);
 
 // Start quiz
 function startQuiz() {
@@ -285,9 +388,12 @@ function showResult() {
     }
 
     const result = results[resultType];
+    currentResultType = resultType;
 
     document.getElementById('loadingScreen').classList.remove('active');
     document.getElementById('resultScreen').classList.add('active');
+
+    resetLeadCaptureUI();
 
     document.getElementById('resultEmoji').textContent = result.emoji;
     document.getElementById('resultTitle').textContent = result.title;
@@ -297,10 +403,6 @@ function showResult() {
     const primaryCTA = document.getElementById('primaryCTA');
     primaryCTA.textContent = result.primaryCTA.text;
     primaryCTA.href = result.primaryCTA.url;
-
-    const secondaryCTA = document.getElementById('secondaryCTA');
-    secondaryCTA.textContent = result.secondaryCTA.text;
-    secondaryCTA.href = result.secondaryCTA.url;
 
     // Add sparkle effect for unicorn
     if (resultType === 'unicorn') {
@@ -327,6 +429,9 @@ function restartQuiz() {
     };
     currentQuestion = 0;
     selectedAnswer = null;
+    currentResultType = '';
+
+    resetLeadCaptureUI();
 
     document.getElementById('resultScreen').classList.remove('active');
     document.getElementById('progressBar').style.width = '0%';

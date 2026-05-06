@@ -684,6 +684,7 @@ body::after {
     margin-bottom: 32px;
     width: 100%;
     max-width: 400px;
+    min-width: 0;
     margin-left: auto;
     margin-right: auto;
 }
@@ -701,6 +702,120 @@ body::after {
     .result-actions .btn {
         min-width: 320px;
     }
+}
+
+.lead-capture {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+}
+
+.lead-form-panel {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(0, 130, 130, 0.35);
+    animation: fadeIn 0.35s ease;
+    /* Override .result-screen { text-align: center } for form readability */
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.lead-form-panel form {
+    text-align: left;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.lead-form-panel[hidden] {
+    display: none !important;
+}
+
+.lead-form-intro {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 0.65);
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.lead-label {
+    display: block;
+    font-family: 'Roboto Condensed', 'Roboto', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 6px;
+    text-align: left;
+}
+
+.lead-input {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    line-height: 22px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--white);
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.lead-input::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.lead-input:focus {
+    outline: none;
+    border-color: var(--teal);
+    background: rgba(255, 255, 255, 0.09);
+}
+
+.lead-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.lead-submit {
+    width: 100%;
+    margin-top: 4px;
+    touch-action: manipulation;
+}
+
+.lead-form-message {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    line-height: 22px;
+    margin-top: 14px;
+    min-height: 22px;
+    text-align: left;
+}
+
+.lead-form-message--error {
+    color: #ff8a80;
+}
+
+.lead-form-message--success {
+    color: #7fd9d4;
 }
 
 .share-section {
@@ -780,6 +895,10 @@ body::after {
 
     .result-emoji {
         font-size: 56px;
+    }
+
+    .lead-form-panel {
+        padding: 18px 16px;
     }
 }
 
@@ -962,6 +1081,57 @@ body::after {
 
     .result-actions {
         margin-bottom: 20px;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .result-actions .btn {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .quiz-container .result-screen.active {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 8px;
+    }
+
+    .lead-form-panel {
+        padding: 16px 12px;
+    }
+
+    .lead-form-intro {
+        font-size: 12px;
+        line-height: 18px;
+        margin-bottom: 12px;
+    }
+
+    .lead-label {
+        font-size: 10px;
+        letter-spacing: 0.06em;
+    }
+
+    /* 16px+ avoids iOS Safari zooming the viewport on input focus */
+    .lead-input {
+        font-size: 16px;
+        line-height: 22px;
+        padding: 13px 12px;
+        min-height: 48px;
+        margin-bottom: 12px;
+    }
+
+    .lead-submit {
+        min-height: 48px;
+        margin-top: 6px;
+    }
+
+    .lead-form-message {
+        font-size: 13px;
+        line-height: 20px;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
     }
 }
 
@@ -1047,6 +1217,29 @@ body::after {
         padding: 12px;
         margin-bottom: 14px;
     }
+
+    .lead-form-panel {
+        padding: 12px 12px;
+    }
+
+    .lead-input {
+        min-height: 44px;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    .lead-submit {
+        min-height: 44px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+
+    .lead-form-intro {
+        margin-bottom: 8px;
+        font-size: 11px;
+        line-height: 16px;
+    }
 }
 
 /* Small phones (max-width: 480px) */
@@ -1087,6 +1280,10 @@ body::after {
 
     .btn {
         padding: 10px 24px;
+    }
+
+    .lead-form-panel {
+        padding: 14px 10px;
     }
 }
 
